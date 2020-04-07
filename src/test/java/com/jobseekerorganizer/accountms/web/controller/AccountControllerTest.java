@@ -1,18 +1,24 @@
 package com.jobseekerorganizer.accountms.web.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jobseekerorganizer.accountms.web.model.UserAccountDTO;
+import com.jobseekerorganizer.config.DynamoDBConfig;
 
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = DynamoDBConfig.class)
 @WebMvcTest(AccountController.class)
 class AccountControllerTest {
 	
@@ -61,6 +67,7 @@ class AccountControllerTest {
 		mockMvc.perform(delete("/account/" + id)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNoContent());
+		System.out.println("Tested");
 	}
 
 }

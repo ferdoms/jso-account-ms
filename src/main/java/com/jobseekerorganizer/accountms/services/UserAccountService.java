@@ -1,6 +1,5 @@
 package com.jobseekerorganizer.accountms.services;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.jobseekerorganizer.accountms.domain.UserAccount;
@@ -11,6 +10,6 @@ public interface UserAccountService {
 	UserAccountDTO getByEmail(String email);
 	void delete(String id);
 	Optional<UserAccount> getById(String id);
-	void update(UserAccountDTO userDTO);
+	void update(String userId, UserAccountDTO userDTO);
 	Iterable<UserAccount>getAll();
 }

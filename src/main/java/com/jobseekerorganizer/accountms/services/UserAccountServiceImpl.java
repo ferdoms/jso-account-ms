@@ -8,7 +8,6 @@ import com.jobseekerorganizer.accountms.domain.UserAccount;
 import com.jobseekerorganizer.accountms.repositories.UserAccountRepository;
 import com.jobseekerorganizer.accountms.web.model.UserAccountDTO;
 
-import java.lang.module.FindException;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
@@ -60,8 +59,8 @@ public class UserAccountServiceImpl implements UserAccountService {
 	}
 
 	@Override
-	public void update(UserAccountDTO userDTO) {
-		Optional<UserAccount> found = repository.findById(userDTO.getId());
+	public void update(String userId, UserAccountDTO userDTO) {
+		Optional<UserAccount> found = repository.findById(userId);
 		
 		Assert.isTrue(found.isPresent(), "User account not found for the given ID");
 		
