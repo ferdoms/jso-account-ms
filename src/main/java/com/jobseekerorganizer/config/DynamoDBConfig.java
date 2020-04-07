@@ -1,17 +1,20 @@
 package com.jobseekerorganizer.config;
 
+import org.socialsignin.spring.data.dynamodb.mapping.DynamoDBMappingContext;
 import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 
-import antlr.StringUtils;
 
 @Configuration
 @EnableDynamoDBRepositories(basePackages = "com.jobseekerorganizer")
@@ -35,9 +38,22 @@ public class DynamoDBConfig {
 
 		return amazonDynamoDB;
 	}
-
+	@Primary
+	@Bean
+	public DynamoDBMapperConfig dynamoDBMapperConfig() {
+		return DynamoDBMapperConfig.DEFAULT;
+	}
+	@Primary
+	@Bean
+	public DynamoDBMapper dynamoDBMapper(AmazonDynamoDB amazonDynamoDB, DynamoDBMapperConfig config) {
+		return new DynamoDBMapper(amazonDynamoDB, config);
+	}
 	@Bean
 	public AWSCredentials amazonAWSCredentials() {
 		return new BasicAWSCredentials(amazonAWSAccessKey, amazonAWSSecretKey);
+	}
+	@Bean
+	public DynamoDBMappingContext dynamoDBMappingContext() {
+		return new DynamoDBMappingContext();
 	}
 }
