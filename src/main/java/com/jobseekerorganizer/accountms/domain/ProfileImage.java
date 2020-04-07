@@ -1,4 +1,4 @@
-package com.jobseekerorganizer.accountms;
+package com.jobseekerorganizer.accountms.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

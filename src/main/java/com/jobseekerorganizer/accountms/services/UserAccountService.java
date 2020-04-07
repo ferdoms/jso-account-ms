@@ -3,7 +3,7 @@ package com.jobseekerorganizer.accountms.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.jobseekerorganizer.accountms.web.model.UserAccount;
+import com.jobseekerorganizer.accountms.domain.UserAccount;
 import com.jobseekerorganizer.accountms.web.model.UserAccountDTO;
 
 public interface UserAccountService {

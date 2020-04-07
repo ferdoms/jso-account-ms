@@ -4,11 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.jobseekerorganizer.accountms.UserAccountRepository;
-import com.jobseekerorganizer.accountms.web.model.UserAccount;
+import com.jobseekerorganizer.accountms.domain.UserAccount;
+import com.jobseekerorganizer.accountms.repositories.UserAccountRepository;
 import com.jobseekerorganizer.accountms.web.model.UserAccountDTO;
 
 import java.lang.module.FindException;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,11 @@ public class UserAccountServiceImpl implements UserAccountService {
 
 	@Override
 	public UserAccountDTO create(UserAccountDTO newUserAcc) {
-		UserAccount user = newUserAcc.toUserAccount();
+		UserAccount user = UserAccount.builder()
+						.email(newUserAcc.getEmail())
+						.fName(newUserAcc.getFName())
+						.lName(newUserAcc.getLName())
+						.password(newUserAcc.getPassword()).build();
 		
 		UserAccount saved = repository.save(user);
 		// verify if user account was saved correctly
@@ -38,6 +43,8 @@ public class UserAccountServiceImpl implements UserAccountService {
 				.fName(userFound.getFName())
 				.lName(userFound.getLName())
 				.password(userFound.getPassword())
+				.createdAt(userFound.getCreatedAt().toInstant().atOffset(ZoneOffset.UTC))
+				.lastModifiedDate(userFound.getLastModifiedDate().toInstant().atOffset(ZoneOffset.UTC))
 				.build();
 		return userData;
 	}
@@ -63,7 +70,6 @@ public class UserAccountServiceImpl implements UserAccountService {
 			updatedUser.setLName(userDTO.getLName());
 			updatedUser.setPassword(userDTO.getPassword());
 //			TODO add profileImage
-//			userFound.setFName(userDTO.getFName());
 			repository.save(updatedUser);
 		});
 	}

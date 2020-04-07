@@ -11,8 +11,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
-import com.jobseekerorganizer.accountms.UserAccountRepository;
-import com.jobseekerorganizer.accountms.web.model.UserAccount;
+import com.jobseekerorganizer.accountms.domain.UserAccount;
+import com.jobseekerorganizer.accountms.repositories.UserAccountRepository;
 
 @Component
 public class AppStartupRunner implements ApplicationRunner {

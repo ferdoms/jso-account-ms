@@ -17,7 +17,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import com.jobseekerorganizer.accountms.UserAccountRepository;
+import com.jobseekerorganizer.accountms.repositories.UserAccountRepository;
 import com.jobseekerorganizer.config.DynamoDBConfig;
 
 

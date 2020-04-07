@@ -21,8 +21,8 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
+import com.jobseekerorganizer.accountms.domain.UserAccount;
 import com.jobseekerorganizer.accountms.services.UserAccountService;
-import com.jobseekerorganizer.accountms.web.model.UserAccount;
 import com.jobseekerorganizer.accountms.web.model.UserAccountDTO;
 
 @RestController
