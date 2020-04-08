@@ -17,7 +17,9 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Configuration
 @EnableDynamoDBRepositories(basePackages = "com.jobseekerorganizer")
 public class DynamoDBConfig {
@@ -38,6 +40,8 @@ public class DynamoDBConfig {
 
 	@Bean
 	public AmazonDynamoDB amazonDynamoDB() {
+		
+		log.info("Connecting to DynamoDB at: " +amazonDynamoDBEndpoint);
 		amazonAWSendpointConfig = new EndpointConfiguration(amazonDynamoDBEndpoint, "eu-west-1");
 		return AmazonDynamoDBClientBuilder
 				.standard()
