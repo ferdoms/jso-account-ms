@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jobseekerorganizer.accountms.web.model.UserAccountDTO;
+import com.jobseekerorganizer.accountms.web.model.UserAccountDto;
 import com.jobseekerorganizer.config.DynamoDBConfig;
 
 @ExtendWith(SpringExtension.class)
@@ -30,7 +30,7 @@ class AccountControllerTest {
 	
 	@Test
 	void testCreate() throws Exception {
-		UserAccountDTO userDTO = UserAccountDTO.builder().build();
+		UserAccountDto userDTO = UserAccountDto.builder().build();
 		String userAccDTOJson = objectMapper.writeValueAsString(userDTO);
 				
 		mockMvc.perform(post("/account")
@@ -41,7 +41,7 @@ class AccountControllerTest {
 
 	@Test
 	void testGetByEmail() throws Exception {
-		UserAccountDTO userDTO = UserAccountDTO.builder().build();
+		UserAccountDto userDTO = UserAccountDto.builder().build();
 		String userAccDTOJson = objectMapper.writeValueAsString(userDTO);
 				
 		mockMvc.perform(post("/account/byEmail")
@@ -52,7 +52,7 @@ class AccountControllerTest {
 
 	@Test
 	void testUpdate()throws Exception {
-		UserAccountDTO userDTO = UserAccountDTO.builder().build();
+		UserAccountDto userDTO = UserAccountDto.builder().build();
 		String userAccDTOJson = objectMapper.writeValueAsString(userDTO);
 				
 		mockMvc.perform(put("/account")

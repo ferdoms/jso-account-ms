@@ -21,20 +21,20 @@ public class UserAccountLoader implements CommandLineRunner {
 	private void loadUserAccObjects() {
 		if(repository.count() == 0) {
 			repository.save(UserAccount.builder()
-					.fName("Jack")
-					.lName("Walsh")
+					.fname("Jack")
+					.lname("Walsh")
 					.email("j.walsh@gmail.com")
 					.password("pass1234")
 					.build());
 			repository.save(UserAccount.builder()
-					.fName("Sofie")
-					.lName("Campanha")
+					.fname("Sofie")
+					.lname("Campanha")
 					.email("sofie.c@gmail.com")
 					.password("pass1234")
 					.build());
 			repository.save(UserAccount.builder()
-					.fName("Fernando")
-					.lName("Marinho")
+					.fname("Fernando")
+					.lname("Marinho")
 					.email("marinhosilva.fernando@gmail.com")
 					.password("pass1234")
 					.build());

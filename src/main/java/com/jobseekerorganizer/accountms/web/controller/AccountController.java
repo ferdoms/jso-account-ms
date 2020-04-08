@@ -20,8 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jobseekerorganizer.accountms.domain.UserAccount;
 import com.jobseekerorganizer.accountms.services.UserAccountService;
-import com.jobseekerorganizer.accountms.web.model.UserAccountDTO;
+import com.jobseekerorganizer.accountms.web.model.UserAccountDto;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController 
 @RequestMapping("/account")
 public class AccountController {
@@ -30,8 +33,8 @@ public class AccountController {
 	private UserAccountService service;
 
 	@PostMapping(produces = "application/json", consumes = "application/json")
-	public ResponseEntity create(@Valid @RequestBody @Validated UserAccountDTO newUserAcc) {
-		UserAccountDTO savedDTO = service.create(newUserAcc);
+	public ResponseEntity create(@Valid @RequestBody @Validated UserAccountDto newUserAcc) {
+		UserAccountDto savedDTO = service.create(newUserAcc);
 
 		HttpHeaders headers = new HttpHeaders();
 		// TODO add hostname to url
@@ -41,12 +44,12 @@ public class AccountController {
 	}
 	
 	@PostMapping(path = "/byEmail", produces = "application/json", consumes = "application/json")
-	public ResponseEntity<UserAccountDTO> getByEmail(@RequestBody UserAccountDTO user) {
+	public ResponseEntity<UserAccountDto> getByEmail(@RequestBody UserAccountDto user) {
 		return new ResponseEntity<>(service.getByEmail(user.getEmail()), HttpStatus.OK);
 	}
 
 	@PutMapping(path="/{userId}", produces = "application/json", consumes = "application/json")
-	public ResponseEntity update(@PathVariable String userId, @Valid @RequestBody @Validated UserAccountDTO user) {
+	public ResponseEntity update(@PathVariable String userId, @Valid @RequestBody @Validated UserAccountDto user) {
 		service.update(userId, user);
 		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}
@@ -54,6 +57,7 @@ public class AccountController {
 	// Testing purposes
 	@GetMapping(produces = "application/json")
 	public ResponseEntity<Iterable<UserAccount>> get() {
+		log.debug("in handle get...");
 		return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
 	}
 

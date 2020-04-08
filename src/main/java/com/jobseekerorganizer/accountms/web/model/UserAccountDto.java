@@ -15,16 +15,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserAccountDTO {
+public class UserAccountDto {
 	
 	@Null
 	private String id;
 	
 	@NotBlank
-	private String fName;
+	private String fname;
 	
 	@NotBlank
-	private String lName;
+	private String lname;
 	
 	@Email
 	private String email;

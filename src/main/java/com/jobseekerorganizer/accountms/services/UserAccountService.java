@@ -3,13 +3,13 @@ package com.jobseekerorganizer.accountms.services;
 import java.util.Optional;
 
 import com.jobseekerorganizer.accountms.domain.UserAccount;
-import com.jobseekerorganizer.accountms.web.model.UserAccountDTO;
+import com.jobseekerorganizer.accountms.web.model.UserAccountDto;
 
 public interface UserAccountService {
-	UserAccountDTO create(UserAccountDTO newUserAcc);
-	UserAccountDTO getByEmail(String email);
+	UserAccountDto create(UserAccountDto newUserAcc);
+	UserAccountDto getByEmail(String email);
 	void delete(String id);
 	Optional<UserAccount> getById(String id);
-	void update(String userId, UserAccountDTO userDTO);
+	void update(String userId, UserAccountDto userDTO);
 	Iterable<UserAccount>getAll();
 }
