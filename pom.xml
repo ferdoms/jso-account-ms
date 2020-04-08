@@ -9,11 +9,11 @@
 		<version>2.2.1.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>demo</artifactId>
+	<groupId>com.jobseekerorganizer</groupId>
+	<artifactId>jso-account-ms</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
-	<description>Demo project for Spring Boot</description>
+	<name>jso-account-ms</name>
+	<description>Account Microservice for JobSeekerOrganizer</description>
 
 	<properties>
 		<java.version>11</java.version>
@@ -79,7 +79,7 @@
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
-			 <version>${org.mapstruct.version}</version>
+			<version>${org.mapstruct.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -120,7 +120,7 @@
 						<path>
 							<groupId>org.mapstruct</groupId>
 							<artifactId>mapstruct-processor</artifactId>
-							 <version>${org.mapstruct.version}</version>
+							<version>${org.mapstruct.version}</version>
 						</path>
 						<path>
 							<groupId>org.projectlombok</groupId>

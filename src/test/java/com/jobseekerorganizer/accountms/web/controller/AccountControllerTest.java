@@ -27,11 +27,11 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jobseekerorganizer.DemoApplication;
+import com.jobseekerorganizer.AccountMsApplication;
+import com.jobseekerorganizer.accountms.config.DynamoDBConfig;
 import com.jobseekerorganizer.accountms.domain.UserAccount;
 import com.jobseekerorganizer.accountms.services.UserAccountService;
 import com.jobseekerorganizer.accountms.web.model.UserAccountDto;
-import com.jobseekerorganizer.config.DynamoDBConfig;
 
 @ExtendWith(SpringExtension.class)
 //@SpringBootTest(classes = DemoApplication.class)

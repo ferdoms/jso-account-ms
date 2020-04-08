@@ -1,4 +1,4 @@
-package com.jobseekerorganizer.config;
+package com.jobseekerorganizer.accountms.config;
 
 import org.socialsignin.spring.data.dynamodb.mapping.DynamoDBMappingContext;
 import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories;
