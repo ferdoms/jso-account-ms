@@ -34,7 +34,6 @@ import com.jobseekerorganizer.accountms.services.UserAccountService;
 import com.jobseekerorganizer.accountms.web.model.UserAccountDto;
 
 @ExtendWith(SpringExtension.class)
-//@SpringBootTest(classes = DemoApplication.class)
 @WebAppConfiguration
 @ActiveProfiles("local")
 @TestPropertySource(properties = { 

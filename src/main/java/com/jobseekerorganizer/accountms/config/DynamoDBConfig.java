@@ -4,7 +4,9 @@ import org.socialsignin.spring.data.dynamodb.mapping.DynamoDBMappingContext;
 import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Primary;
 
 import com.amazonaws.auth.AWSCredentials;
@@ -16,12 +18,14 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import com.jobseekerorganizer.accountms.repositories.UserAccountRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Configuration
-@EnableDynamoDBRepositories(basePackages = "com.jobseekerorganizer")
+@EnableDynamoDBRepositories(mappingContextRef = "dynamoDBMappingContext", basePackageClasses = UserAccountRepository.class)
+
 public class DynamoDBConfig {
 	@Value("${amazon.dynamodb.endpoint}")
 	private String amazonDynamoDBEndpoint;

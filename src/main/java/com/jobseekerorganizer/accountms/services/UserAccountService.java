@@ -5,6 +5,10 @@ import java.util.Optional;
 import com.jobseekerorganizer.accountms.domain.UserAccount;
 import com.jobseekerorganizer.accountms.web.model.UserAccountDto;
 
+/**
+ * @author ferdoms
+ *
+ */
 public interface UserAccountService {
 	UserAccountDto create(UserAccountDto newUserAcc);
 	UserAccountDto getByEmail(String email);

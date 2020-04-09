@@ -1,0 +1,48 @@
+package com.jobseekerorganizer.accountms.domain;
+
+import java.util.Collection;
+
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.util.DigestUtils;
+
+import lombok.Setter;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@ToString(callSuper = true)
+public class AuthenticationTokenImpl extends AbstractAuthenticationToken {
+
+	@Setter
+	private String username;
+
+	public AuthenticationTokenImpl(String principal, Collection<? extends GrantedAuthority> authorities) {
+		super(authorities);
+		this.username = principal;
+	}
+
+	public void authenticate() {
+		if (getDetails() != null && getDetails() instanceof SessionUser && !((SessionUser) getDetails()).hasExpired()) {
+			setAuthenticated(true);
+		} else {
+			setAuthenticated(false);
+		}
+	}
+
+	@Override
+	public Object getCredentials() {
+		return "";
+	}
+
+	@Override
+	public Object getPrincipal() {
+		return username != null ? username.toString() : "";
+	}
+
+	public String getHash() {
+		return DigestUtils.md5DigestAsHex(
+				String.format("%s_%d", username, ((SessionUser) getDetails()).getCreatedAt().getTime()).getBytes());
+	}
+
+}

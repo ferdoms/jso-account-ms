@@ -7,7 +7,10 @@ import org.springframework.stereotype.Component;
 import com.jobseekerorganizer.accountms.domain.UserAccount;
 import com.jobseekerorganizer.accountms.repositories.UserAccountRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+//@RequiredArgsConstructor
 public class UserAccountLoader implements CommandLineRunner {
 	
 	@Autowired
