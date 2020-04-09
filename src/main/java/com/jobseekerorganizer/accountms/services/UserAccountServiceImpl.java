@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
-
+// TODO remove slf4j if not used
 @Slf4j
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
@@ -41,26 +41,11 @@ public class UserAccountServiceImpl implements UserAccountService {
 	}
 
 	@Override
-	public UserAccountDto getByEmail(String email) {
-		
-		
+	public UserAccountDto getByEmail(String email) {	
 		List<UserAccount> users = repository.findByEmail(email);
-		
 		Assert.notEmpty(users, "User account not found with email: " + email);
-		
 		UserAccount userFound = users.get(0);
-		
 		UserAccountDto userData = userAccountMapper.userAccountToUserAccountDto(userFound);
-		
-		log.info("testing mapper: " + "\n" + userFound.toString()+"\n" + userData.toString());
-//		
-//		UserAccountDto userData1  = UserAccountDto.builder().id(userFound.getId()).email(userFound.getEmail())
-//				.fName(userFound.getFName())
-//				.lName(userFound.getLName())
-//				.password(userFound.getPassword())
-//				.createdAt(userFound.getCreatedAt().toInstant().atOffset(ZoneOffset.UTC))
-//				.lastModifiedDate(userFound.getLastModifiedDate().toInstant().atOffset(ZoneOffset.UTC))
-//				.build();
 		return userData;
 	}
 
