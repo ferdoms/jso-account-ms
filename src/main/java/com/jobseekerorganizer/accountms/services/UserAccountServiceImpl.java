@@ -8,6 +8,7 @@ import com.jobseekerorganizer.accountms.domain.UserAccount;
 import com.jobseekerorganizer.accountms.repositories.UserAccountRepository;
 import com.jobseekerorganizer.accountms.web.mappper.UserAccountMapper;
 import com.jobseekerorganizer.accountms.web.model.UserAccountDto;
+import com.jobseekerorganizer.accountms.web.model.UserAccountProfileDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,7 +60,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 	}
 
 	@Override
-	public void update(String userId, UserAccountDto userDTO) {
+	public void updateProfile(String userId, UserAccountProfileDto userDTO) {
 		Optional<UserAccount> found = repository.findById(userId);
 
 		Assert.isTrue(found.isPresent(), "User account not found for the given ID");
@@ -67,7 +68,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 		found.ifPresent(updatedUser -> {
 			updatedUser.setFname(userDTO.getFname());
 			updatedUser.setLname(userDTO.getLname());
-			updatedUser.setPassword(userDTO.getPassword());
+			updatedUser.setEmail(userDTO.getEmail());
 //			TODO add profileImage
 			repository.save(updatedUser);
 		});
@@ -76,6 +77,10 @@ public class UserAccountServiceImpl implements UserAccountService {
 	@Override
 	public Iterable<UserAccount> getAll() {
 		return repository.findAll();
+	}
+	@Override
+	public void updatePassword(String userId, String password) {
+		// TODO
 	}
 
 }

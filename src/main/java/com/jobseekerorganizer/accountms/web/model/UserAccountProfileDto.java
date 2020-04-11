@@ -17,31 +17,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserAccountDto {
-	
-	@Null
-	private String id;
-	
+public class UserAccountProfileDto {
+
 	@NotBlank
 	private String fname;
-	
+
 	@NotBlank
 	private String lname;
-	
+
 	@Email
 	private String email;
-	
-	@NotBlank
-	private String password;
-	
-	@Null// TODO remove anno
-	private ProfileImage profileImage;
-	
-	@Null
-	private OffsetDateTime createdAt;
-	@Null
-	private OffsetDateTime lastModifiedDate;
-		
-
-
 }

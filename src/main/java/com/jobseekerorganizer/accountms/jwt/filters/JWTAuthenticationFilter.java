@@ -19,7 +19,7 @@ import com.jobseekerorganizer.accountms.jwt.TokenAuthenticationService;
 
 public class JWTAuthenticationFilter extends GenericFilterBean {
 	
-	@Autowired
+	
 	private TokenAuthenticationService service;
 	
 	public JWTAuthenticationFilter(TokenAuthenticationService service) {

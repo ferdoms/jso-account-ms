@@ -49,7 +49,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 		userSession.setCreatedAt(new Date());
 		AuthenticationTokenImpl auth = new AuthenticationTokenImpl(userSession.getUsername(), Collections.emptyList());
 		auth.setAuthenticated(true);
-		auth.setDetails(userSession);
+		auth.setDetails(userSession);  
 		redisService.setValue(String.format("%s:%s", userSession.getUsername().toLowerCase(), auth.getHash()),
 				userSession, TimeUnit.SECONDS, 3600L, true);
 		return auth;

@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 
+import com.amazonaws.util.IOUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jobseekerorganizer.accountms.domain.AuthenticationTokenImpl;
 import com.jobseekerorganizer.accountms.domain.SessionUser;
@@ -24,19 +25,22 @@ import com.jobseekerorganizer.accountms.jwt.TokenAuthenticationService;
 
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
-	@Autowired
+	
 	private TokenAuthenticationService service;
 
 
-	public JWTLoginFilter(String url, AuthenticationManager authenticationManager) {
+	public JWTLoginFilter(String url, AuthenticationManager authenticationManager,TokenAuthenticationService service) {
 		super(new AntPathRequestMatcher(url));
 		setAuthenticationManager(authenticationManager);
+		this.service = service;
 	}
 
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException, ServletException {
+		System.out.println(request.getMethod());
+
 		SessionUser credentials = new ObjectMapper().readValue(request.getInputStream(), SessionUser.class);
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(credentials.getUsername(),
 				credentials.getPassword());
