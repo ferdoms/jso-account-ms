@@ -7,12 +7,10 @@ import org.springframework.stereotype.Component;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
-import com.jobseekerorganizer.accountms.UserAccountRepository;
-import com.jobseekerorganizer.accountms.web.model.UserAccount;
+import com.jobseekerorganizer.accountms.domain.UserAccount;
 
 @Component
 public class AppStartupRunner implements ApplicationRunner {
@@ -20,8 +18,7 @@ public class AppStartupRunner implements ApplicationRunner {
 	private AmazonDynamoDB amazonDynamoDB;
 	@Autowired
 	private DynamoDBMapper dynamoDBMapper;
-	@Autowired
-	private DynamoDBMapperConfig config;
+
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {

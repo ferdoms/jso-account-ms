@@ -4,41 +4,46 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.jobseekerorganizer.accountms.UserAccountRepository;
-import com.jobseekerorganizer.accountms.web.model.UserAccount;
-import com.jobseekerorganizer.accountms.web.model.UserAccountDTO;
+import com.jobseekerorganizer.accountms.domain.UserAccount;
+import com.jobseekerorganizer.accountms.repositories.UserAccountRepository;
+import com.jobseekerorganizer.accountms.web.mappper.UserAccountMapper;
+import com.jobseekerorganizer.accountms.web.model.PasswordDto;
+import com.jobseekerorganizer.accountms.web.model.UserAccountDto;
+import com.jobseekerorganizer.accountms.web.model.UserAccountProfileDto;
 
-import java.lang.module.FindException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
-
 	@Autowired
 	private UserAccountRepository repository;
 
+	@Autowired
+	private UserAccountMapper userAccountMapper;
+
 	@Override
-	public UserAccountDTO create(UserAccountDTO newUserAcc) {
-		UserAccount user = newUserAcc.toUserAccount();
-		
+	public UserAccountDto create(UserAccountDto newUserAcc) {
+		UserAccount user = userAccountMapper.userAccountDtoToUserAccount(newUserAcc);
+
 		UserAccount saved = repository.save(user);
 		// verify if user account was saved correctly
-		Assert.hasLength(saved.getId(), "Could not create new user account: " + newUserAcc.toString());;
+		Assert.hasLength(saved.getId(), "Could not create new user account: " + newUserAcc.toString());
+
 		newUserAcc.setId(saved.getId());
 		return newUserAcc;
 	}
 
 	@Override
-	public UserAccountDTO getByEmail(String email) {
+	public UserAccountDto getByEmail(String email) {
 		List<UserAccount> users = repository.findByEmail(email);
 		Assert.notEmpty(users, "User account not found with email: " + email);
 		UserAccount userFound = users.get(0);
-		UserAccountDTO userData = UserAccountDTO.builder().id(userFound.getId()).email(userFound.getEmail())
-				.fName(userFound.getFName())
-				.lName(userFound.getLName())
-				.password(userFound.getPassword())
-				.build();
+		UserAccountDto userData = userAccountMapper.userAccountToUserAccountDto(userFound);
 		return userData;
 	}
 
@@ -48,28 +53,49 @@ public class UserAccountServiceImpl implements UserAccountService {
 	}
 
 	@Override
-	public Optional<UserAccount> getById(String id) {
-		return repository.findById(id);
+	public UserAccountDto getById(String id) {
+		Optional<UserAccount> found = repository.findById(id);
+		Assert.isTrue(found.isPresent(), "User account not found for the given ID");
+		UserAccountDto userDTO = userAccountMapper.userAccountToUserAccountDto(found.get());
+		return userDTO;
+	}
+	@Override
+	public UserAccountProfileDto getProfileById(String id) {
+		Optional<UserAccount> found = repository.findById(id);
+		Assert.isTrue(found.isPresent(), "User account not found for the given ID");
+		UserAccountProfileDto userDTO = userAccountMapper.userAccountToUserAccountProfileDto(found.get());
+		return userDTO;
 	}
 
 	@Override
-	public void update(UserAccountDTO userDTO) {
-		Optional<UserAccount> found = repository.findById(userDTO.getId());
-		
+	public void updateProfile(String userId, UserAccountProfileDto userDTO) {
+		Optional<UserAccount> found = repository.findById(userId);
+
 		Assert.isTrue(found.isPresent(), "User account not found for the given ID");
-		
+
 		found.ifPresent(updatedUser -> {
-			updatedUser.setFName(userDTO.getFName());
-			updatedUser.setLName(userDTO.getLName());
-			updatedUser.setPassword(userDTO.getPassword());
-//			TODO add profileImage
-//			userFound.setFName(userDTO.getFName());
+			updatedUser.setFname(userDTO.getFname());
+			updatedUser.setLname(userDTO.getLname());
+			updatedUser.setEmail(userDTO.getEmail());
+			updatedUser.setProfileImage(userDTO.getProfileImage());
 			repository.save(updatedUser);
 		});
 	}
+
 	@Override
 	public Iterable<UserAccount> getAll() {
 		return repository.findAll();
+	}
+
+	@Override
+	public void updatePassword(String userId, PasswordDto password) {
+		Optional<UserAccount> userFound = repository.findById(userId);
+
+		Assert.isTrue(userFound.isPresent(), "User account not found for the given ID");
+
+		UserAccount user = userFound.get();
+		user.setPassword(password.getPassword());
+		repository.save(user);
 	}
 
 }

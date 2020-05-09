@@ -2,43 +2,47 @@ package com.jobseekerorganizer;
 
 import org.socialsignin.spring.data.dynamodb.repository.EnableScan;
 import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import com.jobseekerorganizer.accountms.UserAccountRepository;
-import com.jobseekerorganizer.config.DynamoDBConfig;
+import com.jobseekerorganizer.accountms.config.DynamoDBConfig;
+import com.jobseekerorganizer.accountms.jwt.TokenAuthenticationService;
+import com.jobseekerorganizer.accountms.repositories.UserAccountRepository;
 
 
-@EnableDynamoDBRepositories(mappingContextRef = "dynamoDBMappingContext", basePackageClasses = UserAccountRepository.class)
+
 @Configuration
 @Import({DynamoDBConfig.class})
 @ComponentScan
-@SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
-@EnableJpaRepositories(excludeFilters = {
-		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = EnableScan.class) })
-public class DemoApplication extends SpringBootServletInitializer {
+@SpringBootApplication(exclude = { SecurityAutoConfiguration.class, RedisAutoConfiguration.class })
+public class AccountMsApplication extends SpringBootServletInitializer {
+	
+	@Value("${ENC_KEY}")
+    private String encKey;
+
+    @Bean
+    public TokenAuthenticationService tokenAuthService() {
+        return new TokenAuthenticationService(encKey);
+    }
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(AccountMsApplication.class, args);
 	}
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(DemoApplication.class);
+		return application.sources(AccountMsApplication.class);
 	}
-
-	private static Class<DemoApplication> applicationClass = DemoApplication.class;
 
 }

@@ -1,16 +1,23 @@
 package com.jobseekerorganizer.accountms.services;
 
-import java.util.List;
 import java.util.Optional;
 
-import com.jobseekerorganizer.accountms.web.model.UserAccount;
-import com.jobseekerorganizer.accountms.web.model.UserAccountDTO;
+import com.jobseekerorganizer.accountms.domain.UserAccount;
+import com.jobseekerorganizer.accountms.web.model.PasswordDto;
+import com.jobseekerorganizer.accountms.web.model.UserAccountDto;
+import com.jobseekerorganizer.accountms.web.model.UserAccountProfileDto;
 
+/**
+ * @author ferdoms
+ *
+ */
 public interface UserAccountService {
-	UserAccountDTO create(UserAccountDTO newUserAcc);
-	UserAccountDTO getByEmail(String email);
+	UserAccountDto create(UserAccountDto newUserAcc);
+	UserAccountDto getByEmail(String email);
 	void delete(String id);
-	Optional<UserAccount> getById(String id);
-	void update(UserAccountDTO userDTO);
+	UserAccountDto getById(String id);
+	UserAccountProfileDto getProfileById(String id);
+	void updateProfile(String userId, UserAccountProfileDto userProfileDTO);
+	void updatePassword(String userId, PasswordDto password);
 	Iterable<UserAccount>getAll();
 }
