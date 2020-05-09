@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.jobseekerorganizer.accountms.domain.AuthenticationTokenImpl;
 import com.jobseekerorganizer.accountms.domain.UserAccount;
 import com.jobseekerorganizer.accountms.services.UserAccountService;
+import com.jobseekerorganizer.accountms.web.model.PasswordDto;
 import com.jobseekerorganizer.accountms.web.model.UserAccountDto;
 import com.jobseekerorganizer.accountms.web.model.UserAccountProfileDto;
 
@@ -39,9 +40,9 @@ public class AccountController {
 	private UserAccountService service;
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity create(UserAccountDto newUserAcc) {
+	public ResponseEntity create(@Valid @RequestBody @Validated UserAccountDto newUserAcc) {
 		UserAccountDto savedDTO = service.create(newUserAcc);
-		System.out.println(newUserAcc.toString());
+
 		HttpHeaders headers = new HttpHeaders();
 		// TODO add hostname to url
 		headers.add("Location", "/account" + savedDTO.toString());
@@ -50,22 +51,23 @@ public class AccountController {
 	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UserAccountDto> getByEmail(AuthenticationTokenImpl auth) {
-		return new ResponseEntity<>(service.getByEmail("marinhosilva.fernando@gmail.com"), HttpStatus.OK);
+	public ResponseEntity<UserAccountProfileDto> getByToken(AuthenticationTokenImpl auth) {
+		return new ResponseEntity<>(service.getProfileById(auth.getPrincipal().toString()), HttpStatus.OK);
 	}
 
 	@PutMapping(path = "/{userId}", produces = "application/json", consumes = "application/json")
-	public ResponseEntity update(@PathVariable String userId, @Valid @RequestBody @Validated UserAccountProfileDto user) {
+	public ResponseEntity update(@PathVariable String userId,
+			@Valid @RequestBody @Validated UserAccountProfileDto user) {
 		service.updateProfile(userId, user);
 		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}
 
-	// Testing purposes
-	@GetMapping(path = "/all", produces = "application/json")
-	public ResponseEntity<Iterable<UserAccount>> get() {
-		log.debug("in handle get...");
-		return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
+	@PutMapping(path = "/passwordReset", consumes = "application/json")
+	public ResponseEntity resetPassword(AuthenticationTokenImpl auth, @Valid @RequestBody @Validated PasswordDto pass) {
+		service.updatePassword(auth.getPrincipal().toString(), pass);
+		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}
+
 
 	@DeleteMapping("/{userId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)

@@ -45,12 +45,12 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 			throw new BadCredentialsException("User with the given email not found.");
 		}
 		SessionUser userSession = new SessionUser();
-		userSession.setUsername(username);
+		userSession.setUserId(userAccount.getId());
 		userSession.setCreatedAt(new Date());
-		AuthenticationTokenImpl auth = new AuthenticationTokenImpl(userSession.getUsername(), Collections.emptyList());
+		AuthenticationTokenImpl auth = new AuthenticationTokenImpl(userSession.getUserId(), Collections.emptyList());
 		auth.setAuthenticated(true);
 		auth.setDetails(userSession);  
-		redisService.setValue(String.format("%s:%s", userSession.getUsername().toLowerCase(), auth.getHash()),
+		redisService.setValue(String.format("%s:%s", userSession.getUserId().toLowerCase(), auth.getHash()),
 				userSession, TimeUnit.SECONDS, 3600L, true);
 		return auth;
 	}

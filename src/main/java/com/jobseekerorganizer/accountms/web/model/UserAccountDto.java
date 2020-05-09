@@ -1,12 +1,12 @@
 package com.jobseekerorganizer.accountms.web.model;
 
 import java.time.OffsetDateTime;
+import java.util.Date;
 
 import javax.validation.constraints.*;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.jobseekerorganizer.accountms.domain.ProfileImage;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,13 +34,12 @@ public class UserAccountDto {
 	@NotBlank
 	private String password;
 	
-	@Null// TODO remove anno
-	private ProfileImage profileImage;
+	private String profileImage;
 	
 	@Null
-	private OffsetDateTime createdAt;
+	private Date createdAt;
 	@Null
-	private OffsetDateTime lastModifiedDate;
+	private Date lastModifiedDate;
 		
 
 

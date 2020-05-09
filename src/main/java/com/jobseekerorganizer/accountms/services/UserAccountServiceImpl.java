@@ -7,6 +7,7 @@ import org.springframework.util.Assert;
 import com.jobseekerorganizer.accountms.domain.UserAccount;
 import com.jobseekerorganizer.accountms.repositories.UserAccountRepository;
 import com.jobseekerorganizer.accountms.web.mappper.UserAccountMapper;
+import com.jobseekerorganizer.accountms.web.model.PasswordDto;
 import com.jobseekerorganizer.accountms.web.model.UserAccountDto;
 import com.jobseekerorganizer.accountms.web.model.UserAccountProfileDto;
 
@@ -17,10 +18,8 @@ import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 
-
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
-	// TODO use UserAccountMapper implementation
 	@Autowired
 	private UserAccountRepository repository;
 
@@ -29,13 +28,12 @@ public class UserAccountServiceImpl implements UserAccountService {
 
 	@Override
 	public UserAccountDto create(UserAccountDto newUserAcc) {
-		UserAccount user = UserAccount.builder().email(newUserAcc.getEmail()).fname(newUserAcc.getFname())
-				.lname(newUserAcc.getLname()).password(newUserAcc.getPassword()).build();
+		UserAccount user = userAccountMapper.userAccountDtoToUserAccount(newUserAcc);
 
 		UserAccount saved = repository.save(user);
 		// verify if user account was saved correctly
 		Assert.hasLength(saved.getId(), "Could not create new user account: " + newUserAcc.toString());
-		;
+
 		newUserAcc.setId(saved.getId());
 		return newUserAcc;
 	}
@@ -55,8 +53,18 @@ public class UserAccountServiceImpl implements UserAccountService {
 	}
 
 	@Override
-	public Optional<UserAccount> getById(String id) {
-		return repository.findById(id);
+	public UserAccountDto getById(String id) {
+		Optional<UserAccount> found = repository.findById(id);
+		Assert.isTrue(found.isPresent(), "User account not found for the given ID");
+		UserAccountDto userDTO = userAccountMapper.userAccountToUserAccountDto(found.get());
+		return userDTO;
+	}
+	@Override
+	public UserAccountProfileDto getProfileById(String id) {
+		Optional<UserAccount> found = repository.findById(id);
+		Assert.isTrue(found.isPresent(), "User account not found for the given ID");
+		UserAccountProfileDto userDTO = userAccountMapper.userAccountToUserAccountProfileDto(found.get());
+		return userDTO;
 	}
 
 	@Override
@@ -69,7 +77,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 			updatedUser.setFname(userDTO.getFname());
 			updatedUser.setLname(userDTO.getLname());
 			updatedUser.setEmail(userDTO.getEmail());
-//			TODO add profileImage
+			updatedUser.setProfileImage(userDTO.getProfileImage());
 			repository.save(updatedUser);
 		});
 	}
@@ -78,9 +86,16 @@ public class UserAccountServiceImpl implements UserAccountService {
 	public Iterable<UserAccount> getAll() {
 		return repository.findAll();
 	}
+
 	@Override
-	public void updatePassword(String userId, String password) {
-		// TODO
+	public void updatePassword(String userId, PasswordDto password) {
+		Optional<UserAccount> userFound = repository.findById(userId);
+
+		Assert.isTrue(userFound.isPresent(), "User account not found for the given ID");
+
+		UserAccount user = userFound.get();
+		user.setPassword(password.getPassword());
+		repository.save(user);
 	}
 
 }

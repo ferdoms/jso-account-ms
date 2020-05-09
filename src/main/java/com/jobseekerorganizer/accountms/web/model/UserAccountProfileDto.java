@@ -6,7 +6,6 @@ import javax.validation.constraints.*;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.jobseekerorganizer.accountms.domain.ProfileImage;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +17,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class UserAccountProfileDto {
+	
+	private String id;
 
 	@NotBlank
 	private String fname;
@@ -27,4 +28,6 @@ public class UserAccountProfileDto {
 
 	@Email
 	private String email;
+
+	private String profileImage;
 }

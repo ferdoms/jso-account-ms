@@ -7,6 +7,7 @@ import javax.validation.ConstraintViolationException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -34,6 +35,10 @@ public class MvcExceptionHandler   {
 	@ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
 	public ResponseEntity<Throwable> MediaTyperErrorHandler(HttpMediaTypeNotAcceptableException e){
 		return new ResponseEntity<>(e.fillInStackTrace(), HttpStatus.BAD_REQUEST);
+	} 
+	@ExceptionHandler(AuthenticationException.class)
+	public ResponseEntity<Throwable> MediaTyperErrorHandler(AuthenticationException e){
+		return new ResponseEntity<>(e.fillInStackTrace(), HttpStatus.UNAUTHORIZED);
 	} 
 	
 }

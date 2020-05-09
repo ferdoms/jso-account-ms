@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 public class SessionUser {
-	
+	private String userId;
 	private String username;
 	private String password;
 	private Date createdAt;

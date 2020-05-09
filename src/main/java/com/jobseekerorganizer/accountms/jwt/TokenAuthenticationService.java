@@ -22,7 +22,8 @@ import com.jobseekerorganizer.accountms.services.RedisService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 public class TokenAuthenticationService {
 	
 	@Autowired
@@ -40,7 +41,7 @@ public class TokenAuthenticationService {
 	public void addAuthentication(HttpServletResponse response, AuthenticationTokenImpl auth) {
 		// Generate JWT token
 		Map<String, Object> claims = new HashMap<>();
-		claims.put("username", auth.getPrincipal());
+		claims.put("userId", auth.getPrincipal());
 		claims.put("hash", auth.getHash());
 		String JWT = Jwts.builder()
 				.setSubject(auth.getPrincipal().toString())
@@ -57,7 +58,7 @@ public class TokenAuthenticationService {
 		}
 
 		// remove "Bearer" text
-		token = token.replace(tokenPrefix, "");
+		token = token.replace(tokenPrefix, "").trim();
 
 		// validating token
 		if (token != null && !token.isEmpty()) {
@@ -65,17 +66,19 @@ public class TokenAuthenticationService {
 			try {
 				claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
 			} catch (Exception e) {
+				
+				log.error(e.getMessage());
 				return null;
 			}
 
 			// valid token and check if token is actually expired or alive by quering redis
-			if (claims != null && claims.containsKey("username")) {
-				String username = claims.get("username").toString();
+			if (claims != null && claims.containsKey("userId")) {
+				String userId = claims.get("userId").toString();
 				String hash = claims.get("hash").toString();
-				SessionUser user = (SessionUser) service.getValue(String.format("%s:%s", username, hash),
+				SessionUser user = (SessionUser) service.getValue(String.format("%s:%s", userId, hash),
 						SessionUser.class);
 				if (user != null) {
-					AuthenticationTokenImpl auth = new AuthenticationTokenImpl(user.getUsername(),
+					AuthenticationTokenImpl auth = new AuthenticationTokenImpl(user.getUserId(),
 							Collections.emptyList());
 					auth.setDetails(user);
 					auth.authenticate();

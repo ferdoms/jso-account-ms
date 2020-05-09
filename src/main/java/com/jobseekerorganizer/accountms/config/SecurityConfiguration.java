@@ -45,6 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
 	@Autowired 
 	private AuthenticationProviderImpl authenticationProvider;
+	
 	@Override
 	protected AuthenticationManager authenticationManager() throws Exception {
 		return new ProviderManager(Arrays.asList((AuthenticationProviderImpl) authenticationProvider));

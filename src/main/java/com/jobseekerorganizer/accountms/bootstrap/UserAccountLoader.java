@@ -10,7 +10,6 @@ import com.jobseekerorganizer.accountms.repositories.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 
 @Component
-//@RequiredArgsConstructor
 public class UserAccountLoader implements CommandLineRunner {
 	
 	@Autowired
